@@ -13,6 +13,9 @@ async def set_topnote(e: Aik.MessageModel):
 async def detect_illegal(e: Aik.MessageModel):
     if e.session.recvType == "user" or e.content.method not in ["text", "markdown", "html"]:
         return
+    if e.sender.senderId in config["group_banusers"] and e.sender.senderLevel != "owner":
+        await Aik.send_message(e.session, content="警报：这里有一条违规消息！", method='text', parentId=e.msgId) # Ban user
+        return
     C = e.content.text.lower()
     for ill in config["banwords"]:
         if ill.lower() in C:

@@ -69,7 +69,9 @@ async def normal_message_trigger(e: Aik.MessageModel):
 
 @YH.register_instruct(config["actions"]["question"])
 async def instruct_trigger(e: Aik.MessageModel):
-    if e.session.recvType == "group":
+    if e.sender.senderId in config["ai_banusers"]:
+        await Aik.send_message(e.session, "由于违反用户协议，您已被封禁", method='text', parentId=e.msgId)
+    elif e.session.recvType == "group":
         await group_chat_action(e.session.recvId, f"请问：{e.content.text}")
     else:
         await private_chat_action(e.sender.senderId, f"请问：{e.content.text}")
