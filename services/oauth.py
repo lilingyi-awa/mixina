@@ -115,7 +115,7 @@ async def request_grant(client_id: str, redirect_uri: str, state: typing.Optiona
         if not redirect_uri.endswith("&"):
             redirect_uri += "&"
     else:
-        redirect_uri += "&"
+        redirect_uri += "?"
     if state is not None:
         redirect_uri += f"state={P.quote(state)}&"
     # Generate
