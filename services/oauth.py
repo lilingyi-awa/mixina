@@ -34,6 +34,29 @@ class AuthcodeModel(vt.orm.Base):
     client_id: str = sa.Column(sa.String(32), nullable=False)
     expires: int = sa.Column(sa.BigInteger(), nullable=False, default=int(time.time()) + 3600)
 
+@vt.register_daemon()
+async def clear_expired_pin():
+    while True:
+        await asyncio.sleep(30)
+        try:
+            async with vt.transient.Session() as session:
+                await session.execute(sa.delete(AuthPINModel).where(AuthPINModel.expires <= int(time.time())))
+                await session.commit()
+        except Exception:
+            pass
+
+@vt.register_daemon()
+async def clear_expired_authcode():
+    while True:
+        await asyncio.sleep(10)
+        try:
+            async with vt.orm.Session() as session:
+                await session.execute(sa.delete(AuthcodeModel).where(AuthcodeModel.expires <= int(time.time())))
+                await session.commit()
+            await asyncio.sleep(35)
+        except Exception:
+            pass
+
 MD5CODE_MATCH = re.compile(r"^[a-f0-9]{32}$")
 AUTHALGO_MATCH = re.compile(r"^[a-f0-9]{33,}$")
 
@@ -72,7 +95,7 @@ class PageResponse(HTMLResponse):
         <hr/>
         {content}
         <hr/>
-        <p>本服务由机器人 <a href="https://yhfx.jwznb.com/share?key=ZQwGk5mtTO1z&ts=1761015272">Vsinger小冰</a> 提供，与云湖官方无关</p>
+        <p>本服务由机器人 <a href="https://yhfx.jwznb.com/share?key=ZQwGk5mtTO1z&ts=1761015272" target="_blank">Vsinger小冰</a> 提供，与云湖官方无关</p>
         <p>最终解释权归何明所有</p>
     <body>
 </html>
@@ -107,7 +130,7 @@ async def request_grant(client_id: str, redirect_uri: str, state: typing.Optiona
     # Print info
     return PageResponse(f"""
 <p>您的验证序列：{aincode}</p>
-<p>请添加云湖机器人：<a href="https://yhfx.jwznb.com/share?key=ZQwGk5mtTO1z&ts=1761015272">Vsinger小冰</a>（ID：83794852），并向“OAuth验证”指令传入该序列。</p>
+<p>请添加云湖机器人：<a href="https://yhfx.jwznb.com/share?key=ZQwGk5mtTO1z&ts=1761015272" target="_blank">Vsinger小冰</a>（ID：83794852），并向“OAuth验证”指令传入该序列。</p>
 <p>验证序列五分钟内有效，超过五分钟请刷新页面重新获取。</p>
 """)
 
