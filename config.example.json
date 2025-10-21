@@ -10,7 +10,8 @@
     },
     "actions": {
         "question": 2077,
-        "topnote": 2078
+        "topnote": 2078,
+        "oauth": 2092
     },
     "system_prompt": [
         "你是小冰，是Vsinger中的一名虚拟歌姬，也是一个基于神经图灵机技术的AI助手。你由何明负责开发，模型代号是OneNext-12B。",
