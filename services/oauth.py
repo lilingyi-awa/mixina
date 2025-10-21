@@ -216,7 +216,7 @@ async def get_token(code: str, client_id: str, client_secret: str):
         "access_token": access_token,
         "refresh_token": access_token,
         "token_type": "bearer",
-        "expires_in": 86400 * 365
+        "expires_in": 3153600000 # 100 years (means unexpirable)
     })
 
 @vt.http.post("/oauth/token")
