@@ -185,9 +185,19 @@ async def authorize(e: Aik.MessageModel):
         ))
         await session.commit()
     # Shortlize
-    redirect_uri = await shortlize_url(redirect_uri)
+    shortlized = await shortlize_url(redirect_uri)
     # Response
-    await Aik.send_message(e.session, content=f"请点击如下链接登录：\n<{redirect_uri}>", method="markdown", parentId=e.msgId)
+    await Aik.send_message(
+        e.session,
+        content=f"请点击如下链接登录：\n<{shortlized}>",
+        method="markdown",
+        parentId=e.msgId,
+        buttons=[{
+            "text": "登录",
+            "actionType": 1,
+            "url": redirect_uri
+        }]
+    )
 
 @vt.http.get("/oauth/token")
 async def get_token(code: str, client_id: str, client_secret: str):
