@@ -82,13 +82,15 @@ class AuthAlgo:
 
 class PageResponse(HTMLResponse):
     def __init__(self, content = None, status_code = 200, headers = None, media_type = None, background = None):
-        estyle = "a{color: black; text-decoration: underline;}\ba:hover{color: #222; text-decoration: none;}"
+        estyle = "a{color: black; text-decoration: underline;}\na:hover{color: #222; text-decoration: none;}"
         content = f"""
 <!DOCTYPE>
 <html>
     <head>
         <meta charset="utf-8"/>
-        <style>{estyle}</style>
+        <style>
+        {estyle}
+        </style>
     </head>
     <body>
         <h1>云湖统一登录</h1>
