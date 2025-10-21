@@ -219,7 +219,7 @@ async def get_token(code: str, client_id: str, client_secret: str):
         "expires_in": 86400 * 365
     })
 
-@vt.http.get("/oauth/token")
+@vt.http.post("/oauth/token")
 async def get_token_post(code: typing.Annotated[str, Form()], client_id: typing.Annotated[str, Form()], client_secret: typing.Annotated[str, Form()]):
     return await get_token(code, client_id, client_secret)
 
