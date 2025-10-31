@@ -11,7 +11,9 @@
     "actions": {
         "question": 2077,
         "topnote": 2078,
-        "oauth": 2092
+        "oauth": 2092,
+        "transfer": 2125,
+        "balance": 2126
     },
     "antifake_key": "",
     "system_prompt": [
